@@ -1,0 +1,116 @@
+<p id="notice"><%= notice %></p>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-8">
+          <p>
+            <strong>Title:</strong>
+            <%= @event.title %>
+          </p>
+
+          <p>
+            <strong>Description:</strong>
+            <%= @event.description %>
+          </p>
+
+          <p>
+            <strong>Cover image:</strong>
+            <%= @event.cover_image %>
+          </p>
+
+          <p>
+            <strong>Start datetime:</strong>
+            <%= @event.start_datetime %>
+          </p>
+
+          <p>
+            <strong>End datetime:</strong>
+            <%= @event.end_datetime %>
+          </p>
+
+          <p>
+            <strong>Venue:</strong>
+            <%= @event.venue %>
+          </p>
+
+          <p>
+            <strong>City:</strong>
+            <%= @event.city %>
+          </p>
+
+          <p>
+            <strong>Country:</strong>
+            <%= @event.country %>
+          </p>
+
+          <p>
+            <strong>State:</strong>
+            <%= @event.state %>
+          </p>
+
+          <p>
+            <strong>Website:</strong>
+            <%= @event.website %>
+          </p>
+
+          <p>
+            <strong>Entry fee:</strong>
+            <%= @event.entry_fee %>
+          </p>
+
+          <p>
+            <strong>Is featured:</strong>
+            <%= @event.is_featured %>
+          </p>
+
+          <p>
+            <strong>Event category:</strong>
+            <%= @event.event_category.name %>
+          </p>
+
+          <p>
+            <strong>Event organizer:</strong>
+            <%= @event.event_organizer.name %>
+          </p>
+
+          <%= link_to 'Edit', edit_event_path(@event), class: "btn btn-secondary" %> |
+          <%= link_to 'Back', events_path, class: "btn btn-primary" %>
+        </div>
+        <div class="col-md-4">  
+          <div id="map"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+  function initMap() {
+    latitude = <%= @event.latitude %>
+    longitude = <%= @event.longitude %>
+    var venue = {lat: latitude, lng: longitude};
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 16,
+      center: venue
+    });
+    var marker = new google.maps.Marker({
+      position: venue,
+      map: map
+    });
+  }
+</script>
+<script 
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFBYM37YGMTdgkEp9fipPljSjprTDZL8Y&libraries=places&callback=initMap"
+  async defer>
+</script>
+<style type="text/css">
+  #map{
+    height: 400px;
+    width: 100%;
+  }
+</style>

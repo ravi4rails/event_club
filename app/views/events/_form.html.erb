@@ -1,0 +1,164 @@
+<%= form_with(model: event, local: true) do |form| %>
+  <% if event.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(event.errors.count, "error") %> prohibited this event from being saved:</h2>
+
+      <ul>
+      <% event.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.hidden_field :latitude, id: "latitude" %>
+  <%= form.hidden_field :longitude, id: "longitude" %>
+
+  <div class="form-group">
+    <%= form.label :title %>
+    <%= form.text_field :title, id: :event_title, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description, id: :event_description, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :cover_image %><br>
+    <%= form.file_field :cover_image, id: :event_cover_image %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :start_datetime %>
+    <%= form.datetime_select :start_datetime, id: :event_start_datetime %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :end_datetime %>
+    <%= form.datetime_select :end_datetime, id: :event_end_datetime %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :venue %>
+    <%= form.text_field :venue, id: "autocomplete", class: "form-control", onFocus: "geolocate()" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :city %>
+    <%= form.text_field :city, id: :locality, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :country %>
+    <%= form.text_field :country, id: :country, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :state %>
+    <%= form.text_field :state, id: :administrative_area_level_1, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :website %>
+    <%= form.text_field :website, id: :event_website, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :entry_fee %>
+    <%= form.number_field :entry_fee, id: :event_entry_fee, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :is_featured %>
+    <%= form.check_box :is_featured, id: :event_is_featured %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :event_category_id %>
+    <%= form.select :event_category_id, options_for_select(EventCategory.all.map {|ec| [ec.name, ec.id]}, selected: event.event_category), {prompt: "Select Event Category"}, {class: "form-control", id: :event_event_category_id}  %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :event_organizer_id %>
+    <%= form.select :event_organizer_id, options_for_select(EventOrganizer.all.map {|eo| [eo.name, eo.id]}, selected: event.event_organizer), {prompt: "Select Organizer"}, {class: "form-control", id: :event_event_organizer_id}  %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to 'Back', events_path, class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<script>
+  // This example displays an address form, using the autocomplete feature
+  // of the Google Places API to help users fill in the information.
+
+  // This example requires the Places library. Include the libraries=places
+  // parameter when you first load the API. For example:
+  // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+  var placeSearch, autocomplete;
+  var componentForm = {
+    locality: 'long_name',
+    administrative_area_level_1: 'long_name',
+    country: 'long_name'
+  };
+
+  function initAutocomplete() {
+    // Create the autocomplete object, restricting the search to geographical
+    // location types.
+    autocomplete = new google.maps.places.Autocomplete(
+        /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+        {types: ['geocode']});
+
+    // When the user selects an address from the dropdown, populate the address
+    // fields in the form.
+    autocomplete.addListener('place_changed', fillInAddress);
+  }
+
+  function fillInAddress() {
+
+    // Get the place details from the autocomplete object.
+    var place = autocomplete.getPlace();
+    
+    $("#latitude").val(place.geometry.location.lat());
+    $("#longitude").val(place.geometry.location.lng());  
+    
+    for (var component in componentForm) {
+      document.getElementById(component).value = '';
+      document.getElementById(component).disabled = false;
+    }
+
+    // Get each component of the address from the place details
+    // and fill the corresponding field on the form.
+    for (var i = 0; i < place.address_components.length; i++) {
+      var addressType = place.address_components[i].types[0];
+      if (componentForm[addressType]) {
+        var val = place.address_components[i][componentForm[addressType]];
+        document.getElementById(addressType).value = val;
+      }
+    }
+  }
+
+  // Bias the autocomplete object to the user's geographical location,
+  // as supplied by the browser's 'navigator.geolocation' object.
+  function geolocate() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var geolocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        var circle = new google.maps.Circle({
+          center: geolocation,
+          radius: position.coords.accuracy
+        });
+        autocomplete.setBounds(circle.getBounds());
+      });
+    }
+  }
+</script>
+<script 
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFBYM37YGMTdgkEp9fipPljSjprTDZL8Y&libraries=places&callback=initAutocomplete"
+  async defer></script>

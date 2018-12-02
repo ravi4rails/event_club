@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 mx-md-auto">
+      <p id="notice"><%= notice %></p>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"><%= @event_category.name %></h3>
+        </div>
+        <div class="card-body">
+          <p>
+            <strong>Description:</strong>
+            <%= @event_category.description %>
+          </p>
+          <%= link_to 'Edit', edit_event_category_path(@event_category), class: "btn btn-success" %> |
+          <%= link_to 'Back', event_categories_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

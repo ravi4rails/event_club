@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @event_organizer.name %>
+</p>
+
+<p>
+  <strong>Logo image:</strong>
+  <%= @event_organizer.logo_image %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @event_organizer.email %>
+</p>
+
+<p>
+  <strong>Contact:</strong>
+  <%= @event_organizer.contact %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @event_organizer.address %>
+</p>
+
+<p>
+  <strong>City:</strong>
+  <%= @event_organizer.city %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @event_organizer.state %>
+</p>
+
+<p>
+  <strong>Country:</strong>
+  <%= @event_organizer.country %>
+</p>
+
+<p>
+  <strong>Latitude:</strong>
+  <%= @event_organizer.latitude %>
+</p>
+
+<p>
+  <strong>Longitude:</strong>
+  <%= @event_organizer.longitude %>
+</p>
+
+<%= link_to 'Edit', edit_event_organizer_path(@event_organizer) %> |
+<%= link_to 'Back', event_organizers_path %>
